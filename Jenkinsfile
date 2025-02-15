@@ -15,6 +15,7 @@ node {
 		withDockerContainer(args: '-u root', image: 'python:3.9'){
 			sh 'pip install pyinstaller'
 			sh 'pyinstaller --onefile sources/add2vals.py'
+			sleep time: 1, unit: 'MINUTES'
 		}
 		archiveArtifacts 'dist/add2vals'
 	}
