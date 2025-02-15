@@ -13,7 +13,7 @@ node {
 	}
 	stage('Manual Approval') {
         steps {
-				input message: 'Lanjutkan ke tahap Deploy?', ok: 'Lanjutkan'
+				input message: 'Lanjutkan ke tahap Deploy ?', ok: 'Lanjutkan'
             }
 
     }
