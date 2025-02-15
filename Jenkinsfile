@@ -12,10 +12,7 @@ node {
 		junit 'test-reports/results.xml'
 	}
 	stage('Manual Approval') {
-        steps {
-				input message: 'Lanjutkan ke tahap Deploy ?', ok: 'Lanjutkan'
-            }
-
+		input message: 'Lanjutkan ke tahap Deploy?', ok: 'Lanjutkan'
     }
 	stage('Deploy') {
 		withDockerContainer(args: '-u root', image: 'python:3.9'){
