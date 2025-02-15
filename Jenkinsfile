@@ -12,8 +12,7 @@ node {
 		junit 'test-reports/results.xml'
 	}
 	stage('Deploy') {
-		docker.image('python:3').inside {
-			sh 'pip install pyinstaller'
+		docker.image('python:3.9').inside {
 			sh 'pyinstaller --onefile sources/add2vals.py'
 		}
 		archiveArtifacts 'dist/add2vals'
