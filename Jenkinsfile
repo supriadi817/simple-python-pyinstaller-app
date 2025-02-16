@@ -1,4 +1,4 @@
-node("phyton") {
+node("python") {
     checkout scm
 	stage('Build') {
 		docker.image('python:2-alpine').inside {
