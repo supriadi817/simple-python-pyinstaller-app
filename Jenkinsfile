@@ -1,16 +1,14 @@
-node {
+node("phyton") {
     checkout scm
 	stage('Build') {
 		docker.image('python:2-alpine').inside {
 			sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
 		}
-		label 'phyton'
 	}
 	stage('Test') {
 		docker.image('qnib/pytest').inside {
 			sh 'py.test --verbose --junit-xml test-reports/results.xml ./sources/test_calc.py'
 		}
-		label 'phyton'
 		junit 'test-reports/results.xml'
 	}
 	stage('Manual Approval') {
@@ -22,7 +20,6 @@ node {
 			sh 'pyinstaller --onefile sources/add2vals.py'
 			sleep time: 1, unit: 'MINUTES'
 		}
-		label 'phyton'
 		archiveArtifacts 'dist/add2vals'
 	}
 }
