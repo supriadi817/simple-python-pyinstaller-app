@@ -1,5 +1,6 @@
 node {
     checkout scm
+	stash includes: 'sources/**/*', name:'sources'
 	stage('Build') {
 		docker.image('python:2-alpine').inside {
 			sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
@@ -12,14 +13,21 @@ node {
 		junit 'test-reports/results.xml'
 	}
 	stage('Manual Approval') {
-		input message: 'Lanjutkan ke tahap Deploy ?', ok: 'Lanjutkan'
+		input message: 'Lanjutkan ke tahap Deploy ?'
     }
+
+}
+
+node('python') {
+	unstash 'sources'
 	stage('Deploy') {
-		withDockerContainer(args: '-u root', image: 'python:3.9'){
-			sh 'pip install pyinstaller'
+		docker.image('python:3.9').inside("--entrypoint=''") {
+            sh 'pip install pyinstaller'
 			sh 'pyinstaller --onefile sources/add2vals.py'
+			archiveArtifacts 'dist/add2vals'
 			sleep time: 1, unit: 'MINUTES'
+			}		
 		}
-		archiveArtifacts 'dist/add2vals'
+		
 	}
 }
